@@ -1,0 +1,49 @@
+# Sample Docker Compose setup with psiTurk reverse-proxied through nginx. nginx
+# delivers static assets far more efficiently than the built-in psiTurk server.
+# Also includes a MySQL server.
+#
+# To use:
+#
+# 1) Structure your psiTurk experiment directory as follows:
+#    - `exp` folder contains the psiTurk root, including `.psiturkconfig`,
+#      `config.txt`, `custom.py`, etc. etc.
+#    - `data` folder should be an empty folder -- database content will go here
+#    - root directory should contain this file, `nginx.conf`, and `.env` from
+#      this repository.
+# 2) Modify `.env`, selecting a public server port and optionally modifying
+#    MySQL information.
+# 3) Run with `docker-compose -f docker-compose.mysql-nginx.yml up`
+
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "${PSITURK_PUBLIC_PORT}:80"
+    volumes:
+      - ./exp:/var/www/exp:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  db:
+    image: mysql:latest
+    volumes:
+     - ./data/db:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+
+  psiturk:
+    depends_on:
+      - db
+      - nginx
+    image: cpllab/psiturk:3.2.0
+    volumes:
+     - ./exp:/psiturk
+    tty: true
+    stdin_open: true
+    restart: always
