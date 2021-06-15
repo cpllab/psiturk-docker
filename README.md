@@ -1,67 +1,16 @@
-# Version-stable psiTurk Docker images
-
-This repository provides Docker images for psiTurk, via
-[DockerHub][adamliter/psiturk].
-
-According to the [documentation][what-is-psiturk], psiTurk is:
-
-> designed to help you run fully-customized and dynamic web-experiments
-> on [Amazon Mechanical Turk]. Specifically, it allows you to:
->
-> 1. Run a web server for your experiment
-> 2. Test your experiment
-> 3. Interact with [Amazon Mechanical Turk] to recruit, post [Human
->    Intelligence Task]s, filter, and pay participants ([Amazon
->    Mechanical Turk] workers)
-> 4. Manage databases and export data
->
-> **psiTurk** also includes a powerful interactive command interface
-> that lets you manage most of your [Amazon Mechanical Turk] activity.
-
+This repository provides Docker images for psiTurk [via Docker Hub](https://hub.docker.com/r/cpllab/psiturk). The build scripts were originally forked from [`adamliter/psiturk`](https://github.com/adamliter/psiturk).
 
 ## Tags
 
-The images are tagged using psiTurk version numbers, as well as the tag
-`latest` for the most recent version of psiTurk available
-on [PyPI][pypi-psiturk] and `dev` for the most recent version of psiTurk
-available on the `master` branch of
-the [psiTurk repository][github-psiturk]. The current tags are:
+The images are tagged using psiTurk version numbers. Current tags are
 
-- `dev`
+- `3.2.0`
+- `2.3.2`
 - `latest`
-- `2.2.3`
-- `2.2.2`
-- `2.2.1`
-- `2.2.0`
-- `2.1.7`
-- `2.1.6`
-- `2.1.4`
-
-It's likely that you'll want to use either the `latest` or `dev`
-tag. The `dev` tag is often quite a bit further along than the latest
-release on [PyPI][pypi]. In particular, at the time of writing
-(2018-07-28), if you want to use a recent version of MySQL for your
-database, you'll need to use the `dev` tag, since the `latest` tag for
-the version of psiTurk that is on PyPI uses a very outdated version of
-SQLAlchemy, which only supports MySQL versions 5.7.x and older. If you
-want to use an 8.x.y version of MySQL, you'll need to use the `dev` tag.
-
-Also note that there is not a tag for `2.1.5` because there is not a
-version for psiTurk `2.1.5` on [PyPI][pypi]. All other older versions of
-the `2.x.y` series are not available because they try to install
-`gnureadline`,
-which
-[requires installing `libncurses5-dev` via `apt-get`][gnureadline-fail],
-and I'd rather not increase the image size just for some older psiTurk
-versions that folks are unlikely to want to ever use.  None of the
-`1.x.y` versions are available because none of these support
-the [Ad Server][ad-server].
-
-It's worth noting that `us_only` and `approve_requirement` did not work
-prior to version `2.2.0` (see, *e.g.*, [here][version-warning]). Use
-older versions at your own risk.
 
 ## Usage
+
+(Notes below from adamliter)
 
 These Docker images are intended to be the base for your own (very
 simple!) Docker images. (For help using psiTurk and Docker together, as
